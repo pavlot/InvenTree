@@ -1578,9 +1578,12 @@ class StockAdjustmentItemSerializer(serializers.Serializer):
 
         return stock_item
 
-    quantity = serializers.DecimalField(
-        max_digits=15, decimal_places=5, min_value=Decimal(0), required=True
-    )
+    quantity = serializers.FloatField(required=True)
+
+    def validate_quantity(self, quantity):
+        """Validate the quantity value."""
+        decimal_quantity = round(quantity, 5)
+        return decimal_quantity
 
     batch = serializers.CharField(
         max_length=100,
